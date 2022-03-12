@@ -1,0 +1,21 @@
+>>> Creacion de un entorno virtual desde la terminal
+python -m venv nombre_entorno
+
+>>> levanta el entorno en la terminal git bash
+<nombre de entorno/Scripts/activate>
+
+>>> instalar una nueva libreria
+pip install <libreria>
+
+>>> listar librerias
+pip list
+
+>>> listar librerias de una forma mas tecnica
+pip freeze
+
+>>> listar librerias de una forma mas tecnica y crea un archivo nuevo donde colocara la lista de librerias
+pip freeze > 'nombre_archivo'
+
+>>> instalacion de librerias a partir de un archivo (se hace uso del archivo generado por pip freeze > )
+pip install -r <archivo>
+
