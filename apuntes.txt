@@ -1,21 +1,12 @@
->>> Creacion de un entorno virtual desde la terminal
-python -m venv nombre_entorno
+python -m venv <nombre_entorno> > crea un entorno virtual en la ubicacion de la terminal
 
->>> levanta el entorno en la terminal git bash
-<nombre de entorno/Scripts/activate>
+source <nombre_entorno>/Scripts/activate > levantara el entorno en gitbash (windows)
+source <nombre_entorno>/bin/activate > levantara el entorno en Mac/Linux
+<nombre_entorno>/Scripts/activate > levantara el entorno en powershell o CMD (windows)
 
->>> instalar una nueva libreria
-pip install <libreria>
+pip install <libreria> > instalar una nueva libreria
+pip list > lista las librerias en forma de una tabla
+pip freeze > lista las librerias pero de una manera mas tecnica
+pip freeze > requirements.txt  >  creara un archivo llamado "requirements.txt" en el cual almacenara toda la informacion del "pip freeze"
 
->>> listar librerias
-pip list
-
->>> listar librerias de una forma mas tecnica
-pip freeze
-
->>> listar librerias de una forma mas tecnica y crea un archivo nuevo donde colocara la lista de librerias
-pip freeze > 'nombre_archivo'
-
->>> instalacion de librerias a partir de un archivo (se hace uso del archivo generado por pip freeze > )
-pip install -r <archivo>
-
+pip install -r requirements.txt > instalara las librerias definidas en el archivo "requirements.txt" con su version en especifico
