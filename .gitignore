@@ -1,4 +1,4 @@
-entorno_flask/
+entorno_auth/
 
 # Excluimos los archivos cache de python
 *.pyc
