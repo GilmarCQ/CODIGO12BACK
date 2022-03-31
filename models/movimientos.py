@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy.sql.schema import ForeignKey
 
 
-class Movimientos(conexion.Model):
+class Movimiento(conexion.Model):
     __tablename__ = 'movimientos'
     id = Column(type_=types.Integer, primary_key=True, autoincrement=True)
     monto = Column(type_=types.Float, nullable=False)
@@ -13,7 +13,7 @@ class Movimientos(conexion.Model):
     moneda = Column(type_=types.Enum('SOLES', 'DOLARES', 'EUROS'))
     fecha_creacion = Column(type_=types.DateTime(), default=datetime.now())
 
-    usuario_id = Column(ForeignKey(column='usuarios.id'), type_=types.Integer, nullable=False)
+    usuario_id = Column(ForeignKey(column='usuario.id'), type_=types.Integer, nullable=False)
     usuario = orm.relationship('Usuario', backref='usuario_movimientos')
 
     categoria_id = Column(ForeignKey(column='categorias.id'), type_=types.Integer, nullable=False)
