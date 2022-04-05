@@ -1,0 +1,5 @@
+CLI > Interfaz de Linea de Comandos (Command Line Interface)
+Todos los comandos de django se pueden visualizar ingresando en consola > django-admin
+django-admin start-project NOMBRE_PROYECTO > crea un nuevo proyecto con los archivos necesarios para django
+
+python manage.py runserver > levantar el proyecto en Django
