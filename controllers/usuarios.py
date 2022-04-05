@@ -1,3 +1,5 @@
+import os
+
 from flask_restful import Resource, request
 from dtos.registro_dto import RegistroDTO, UsuarioResponseDto, LoginDTO
 from dtos.usuario_dto import ResetPasswordRequestDTO
@@ -8,6 +10,9 @@ from smtplib import SMTP
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from os import environ
+from cryptography.fernet import Fernet
+from datetime import timedelta, datetime
+import json
 
 
 class RegistroController(Resource):
@@ -58,9 +63,22 @@ class ResetPasswordController(Resource):
             if usuarioEncontrado is not None:
                 texto = 'Hola este es un mensaje de recuperacion de correo'
                 mensaje['Subject'] = 'Reiniciar contraseña de App Monedero'
+
+                # Encriptacion de informacion
+                fernet = Fernet(environ.get('FERNET_SECRET_KEY'))
+                mensaje_secreto = {
+                    'fecha_caducidad': str(datetime.now()+timedelta(hours=1)),
+                    'id_usuario': usuarioEncontrado.id
+                }
+                mensaje_secreto_str = json.dumps(mensaje_secreto)
+                mensaje_encriptado = fernet.encrypt(bytes(mensaje_secreto_str, 'utf-8'))
+
+                # print(mensaje_encriptado.decode('utf-8'))
+                # print(mensaje_encriptado)
+
+                # Fin de la encriptacion
                 html = open('./email-templates/forgot-password.html').read().format(usuarioEncontrado.nombre,
-                                                                                    usuarioEncontrado.correo,
-                                                                                    environ.get('URL_FRONT'))
+                                        environ.get('URL_FRONT') + '/reset-password?token='+mensaje_encriptado.decode('utf-8'))
                 #   cuando se quiere agregar un html, como texto de mensaje, este debe ir despues del texto ya que
                 #   primero tratara de enviar el ultimo y si no lo logra enviara el primero
                 # mensaje.attach(MIMEText(texto, 'plain'))

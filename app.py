@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_restful import Api
 from controllers.usuarios import (RegistroController, LoginController, ResetPasswordController)
 from config import validador, conexion
@@ -11,6 +11,10 @@ from datetime import timedelta
 from dtos.registro_dto import UsuarioResponseDto
 from seed import categoriaSeed
 from controllers.movimientos import MovimientosController
+from cryptography.fernet import Fernet
+from datetime import datetime
+from models.usuarios import Usuario
+import json
 
 load_dotenv()
 
@@ -82,6 +86,42 @@ def perfil_usuario():
         'message': 'El usuario es',
         'content': contenido
     }
+
+
+@app.route('/validar-token', methods=['POST'])
+def validar_token():
+    body = request.get_json()
+    token = body.get('token')
+    fernet = Fernet(environ.get('FERNET_SECRET_KEY'))
+    try:
+        # el metodo decrypt se usa para descifrar la token previamente encryptada, de ser incorrecta se lanzara un error
+        # la token la convierto a bytes y luego el resultado lo convertimos a string
+        data = fernet.decrypt(bytes(token, 'utf-8')).decode('utf-8')
+        print(data)
+        diccionario = json.loads(data)
+        fecha_caducidad = datetime.strptime(diccionario.get('fecha_caducidad'), '%Y-%m-%d %H:%M:%S.%f')
+        hora_actual = datetime.now()
+        if hora_actual <= fecha_caducidad:
+            # with_entities >   permitira elegir las columnas que desea consultar
+            usuarioEncontrado = conexion.session.query(Usuario).with_entities(Usuario.correo).filter_by(
+                id=diccionario.get('id_usuario')).first()
+            if usuarioEncontrado:
+                return {
+                       'message': 'Si es el usuario',
+                       'correo': usuarioEncontrado.correo
+                   }, 200
+            else:
+                return {
+                    'message': 'Usuario no existe'
+                }, 400
+        else:
+            return {
+                       'message': 'El token ha vencido'
+                   }, 200
+    except Exception as e:
+        return {
+                   'message': 'Token incorrecto'
+               }, 400
 
 
 api.add_resource(RegistroController, '/registro')
