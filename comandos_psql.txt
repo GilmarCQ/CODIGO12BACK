@@ -1,0 +1,5 @@
+# Para ver la lista completa de comandos : https://www.postgresql.org/docs/current/app-psql.html
+# psql -U USER -h HOST -d DATABASE PORT   >   permite la conexion con un servidor
+# \l                  >   lista todas las bases de datos del servidor
+# \c DATABASE_NAME    >   cambio entre base de datos, permite seleccionar una base de datos
+# \q                  >   termina la sesion en el psql
