@@ -1,0 +1,3 @@
+npx prisma init             >   crea la carpeta prisma con un esquema de arranque en blanco
+npx prisma migrate dev      >   crea una nueva migracion,
+                                (la primera vez que se ejecuta instala la libreria prisma/client)
